@@ -36,7 +36,7 @@ const query = (route) => {
 // BDD
 //==============================
 
-const db = new sqlite3.Database(`API/bdd2.db`, (err) => {
+const db = new sqlite3.Database(`API/bdd.db`, (err) => {
     if (err) console.error("Erreur de connexion à la BDD");
     else console.log("Connecté à la BDD");
 });
