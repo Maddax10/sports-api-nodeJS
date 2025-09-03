@@ -5,8 +5,7 @@ const endpoint = "users_EP";
 const ROUTES_GET = [
     `/${endpoint}/:_id_user`,
     `/${endpoint}/users`,
-    `/${endpoint}/login`,
-    `/${endpoint}/login/connect/:_id_user`,
+    `/${endpoint}/login/connect/:username_user/:password_user`,
     `/${endpoint}/login/disconnect/:_id_user`,
     // "/users/:id_user/programs",
     // "/users/:id_user/programs/:id_program/seasons/:id_season/weeks/:id_week/sessions/:id_session/exercises",
@@ -62,32 +61,14 @@ express.get("/:_id_user", (req, res) => {
 /**
  * Renvoit les infos de l'utilisateur si le login est bon
  */
-express.get("/login/:username_user/:password_user", (req, res) => {
-    const { username_user } = req.params;
-    const { password_user } = req.params;
+// express.get("/login/:username_user/:password_user", (req, res) => {
+//     const { username_user } = req.params;
+//     const { password_user } = req.params;
 
-    db.all(`SELECT * FROM users WHERE username_user = ? AND password_user = ?`, [username_user, password_user], (err, rows) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json(rows);
-    });
-});
-// //Select de  tous les exercices d'un user
-// express.get("/users/:id_user/programs", (req, res) => {
-//     const { id_user } = req.params;
-//     db.all(
-//         `
-//         SELECT p.*
-//         FROM users u
-//         JOIN programs p ON p.id_user_program = u._id_user
-//         WHERE u._id_user = ?
-
-//           `,
-//         [id_user],
-//         (err, rows) => {
-//             if (err) return res.status(500).json({ error: err.message });
-//             res.json(rows);
-//         }
-//     );
+//     db.all(`SELECT * FROM users WHERE username_user = ? AND password_user = ?`, [username_user, password_user], (err, rows) => {
+//         if (err) return res.status(500).json({ error: err.message });
+//         res.json(rows);
+//     });
 // });
 
 //========================================================================
@@ -108,27 +89,13 @@ express.post(`/formations`, (req, res) => {
 // Routes UPDATE/PUT
 //========================================================================
 //connect
-express.put("/login/connect/:_id_user", (req, res) => {
-    const { _id_user } = req.params;
-    // Construction dynamique de la requête SQL
-    db.run(`UPDATE users SET _connected_user = 1 WHERE _id_user = ?`, [_id_user], function (err) {
-        if (err) return res.status(500).json({ error: err.message });
-        db.get(`SELECT * FROM users WHERE _id_user = ?`, [_id_user], (err, row) => {
-            if (err) return res.status(500).json({ error: err.message });
-            res.status(200).json(row);
-        });
-    });
-});
-//disconnect
-express.put("/login/disconnect/:_id_user", (req, res) => {
-    const { _id_user } = req.params;
-    const keys = Object.keys(req.body);
-    const values = Object.values(req.body);
+express.get("/login/connect/:username_user/:password_user", (req, res) => {
+    const { username_user } = req.params;
+    const { password_user } = req.params;
 
-    // Construction dynamique de la requête SQL
-    db.run(`UPDATE users SET _connected_user = 0 WHERE _id_user = ?`, [...values, _id_user], function (err) {
+    db.get(`SELECT * FROM users WHERE username_user = ? AND password_user = ?`, [username_user, password_user], (err, row) => {
         if (err) return res.status(500).json({ error: err.message });
-        res.status(200).json({ updated: this.changes });
+        res.status(200).json(row);
     });
 });
 
