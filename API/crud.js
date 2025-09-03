@@ -1,24 +1,9 @@
-import Express from "express";
 import sqlite3 from "sqlite3";
-import cors from "cors";
+import { Connect_DB } from "./connectDB.js";
+import { GET, ROUTES_GET, ROUTES_POST, ROUTES_DELETE } from "./endpoints_users.js";
 
-const GET = ["programs", "users"];
-
-const ROUTES_GET = ["/api/users", "/api/users/:id_user", , "/api/users/:id_user/programs", "/api/users/:id_user/programs/:id_program/seasons/:id_season/weeks/:id_week/sessions/:id_session/exercises"];
-
-const ROUTES_POST = [""];
-
-const ROUTES_DELETE = [""];
-
-//Configuration de l'api
-const express = Express();
-express.use(
-    cors({
-        origin: "*",
-        methods: ["GET", "POST", "DELETE"],
-        allowedHeaders: ["Content-Type", "Authorization"],
-    })
-);
+const connectDB = new Connect_DB().instance;
+const express = connectDB.getExpress();
 
 //Query à utiliser pour les GET
 const query = (route) => {
@@ -45,18 +30,6 @@ const db = new sqlite3.Database(`API/bdd.db`, (err) => {
 //fin BDD
 //-------------------------------
 
-//========================================================================
-// Documentation API
-//========================================================================
-
-express.get(`/`, (req, res) => {
-    const tmpDoc = {
-        ROUTES_GET,
-        ROUTES_POST,
-        ROUTES_DELETE,
-    };
-    return res.status(200).json(tmpDoc);
-});
 //------------------------------
 //fin doc
 //------------------------------
@@ -74,24 +47,24 @@ express.get("/users/:id_user", (req, res) => {
         res.json(rows);
     });
 });
-//Select de  tous les exercices d'un user
-express.get("/users/:id_user/programs", (req, res) => {
-    const { id_user } = req.params;
-    db.all(
-        `
-        SELECT p.*
-        FROM users u
-        JOIN programs p ON p.id_user_program = u._id_user
-        WHERE u._id_user = ? 
+// //Select de  tous les exercices d'un user
+// express.get("/users/:id_user/programs", (req, res) => {
+//     const { id_user } = req.params;
+//     db.all(
+//         `
+//         SELECT p.*
+//         FROM users u
+//         JOIN programs p ON p.id_user_program = u._id_user
+//         WHERE u._id_user = ?
 
-          `,
-        [id_user],
-        (err, rows) => {
-            if (err) return res.status(500).json({ error: err.message });
-            res.json(rows);
-        }
-    );
-});
+//           `,
+//         [id_user],
+//         (err, rows) => {
+//             if (err) return res.status(500).json({ error: err.message });
+//             res.json(rows);
+//         }
+//     );
+// });
 
 //Select All
 GET.forEach((route) => {
