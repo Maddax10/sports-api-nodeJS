@@ -5,8 +5,7 @@ const endpoint = "users_EP";
 const ROUTES_GET = [
     `/${endpoint}/:_id_user`,
     `/${endpoint}/users`,
-    `/${endpoint}/login/connect/:username_user/:password_user`,
-    `/${endpoint}/login/disconnect/:_id_user`,
+    `/${endpoint}/login/:username_user/:password_user`,
     // "/users/:id_user/programs",
     // "/users/:id_user/programs/:id_program/seasons/:id_season/weeks/:id_week/sessions/:id_session/exercises",
 ];
@@ -58,6 +57,17 @@ express.get("/:_id_user", (req, res) => {
     });
 });
 
+//connect
+express.get("/login/:username_user/:password_user", (req, res) => {
+    const { username_user } = req.params;
+    const { password_user } = req.params;
+
+    db.get(`SELECT * FROM users WHERE username_user = ? AND password_user = ?`, [username_user, password_user], (err, row) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.status(200).json(row);
+    });
+});
+
 /**
  * Renvoit les infos de l'utilisateur si le login est bon
  */
@@ -88,16 +98,6 @@ express.post(`/formations`, (req, res) => {
 //========================================================================
 // Routes UPDATE/PUT
 //========================================================================
-//connect
-express.get("/login/connect/:username_user/:password_user", (req, res) => {
-    const { username_user } = req.params;
-    const { password_user } = req.params;
-
-    db.get(`SELECT * FROM users WHERE username_user = ? AND password_user = ?`, [username_user, password_user], (err, row) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.status(200).json(row);
-    });
-});
 
 //========================================================================
 // Routes DELETE
