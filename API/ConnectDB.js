@@ -1,5 +1,6 @@
 import Express from "express";
 import cors from "cors";
+import { GET, ROUTES_GET, ROUTES_POST, ROUTES_DELETE } from "./endpoints_users.js";
 /**
  * Classe qui permet d'initialiser le serveur API, la documentation pour les users et les sports
  */
@@ -47,7 +48,7 @@ export class Connect_DB {
      * Initialise la documentation de l'API pour l'user
      */
     setup_users_docs() {
-        this.#express.get(`/users_docs`, (req, res) => {
+        this.#express.get(`/docs`, (req, res) => {
             const tmpDoc = {
                 ROUTES_GET,
                 ROUTES_POST,

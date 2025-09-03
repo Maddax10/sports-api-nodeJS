@@ -1,6 +1,6 @@
 import express from "express";
-import sqlite3 from "sqlite3";
-import crudRouter from "./API/crud.js";
+import userController from "./API/userController.js";
+import sportsController from "./API/sportsController.js";
 
 //==============================
 // server
@@ -8,8 +8,8 @@ import crudRouter from "./API/crud.js";
 const app = express();
 app.use(express.json());
 
-app.use("/doc", crudRouter);
-app.use("/api", crudRouter);
+app.use("/sports", userController);
+app.use("/users", sportsController);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
