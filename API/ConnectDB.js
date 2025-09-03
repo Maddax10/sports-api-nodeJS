@@ -32,7 +32,7 @@ export class Connect_DB {
             this.#express.use(
                 cors({
                     origin: "*",
-                    methods: ["GET", "POST", "DELETE"],
+                    methods: ["GET", "POST", "PUT", "DELETE"],
                     allowedHeaders: ["Content-Type", "Authorization"],
                 })
             );

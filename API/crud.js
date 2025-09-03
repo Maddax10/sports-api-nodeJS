@@ -1,25 +1,6 @@
-<<<<<<< Updated upstream:API/crud.js
 import Express from "express";
 import sqlite3 from "sqlite3";
 import cors from "cors";
-
-const GET = ["programs", "users"];
-
-const ROUTES_GET = ["/api/users", "/api/users/:id_user", , "/api/users/:id_user/programs", "/api/users/:id_user/programs/:id_program/seasons/:id_season/weeks/:id_week/sessions/:id_session/exercises"];
-
-const ROUTES_POST = [""];
-
-const ROUTES_DELETE = [""];
-
-//Configuration de l'api
-const express = Express();
-express.use(
-    cors({
-        origin: "*",
-        methods: ["GET", "POST", "DELETE"],
-        allowedHeaders: ["Content-Type", "Authorization"],
-    })
-);
 
 //Query à utiliser pour les GET
 const query = (route) => {
@@ -93,7 +74,6 @@ express.get("/users/:id_user/programs", (req, res) => {
         }
     );
 });
-=======
 // import sqlite3 from "sqlite3";
 // import { Connect_DB } from "./connectDB.js";
 
@@ -120,7 +100,6 @@ express.get("/users/:id_user/programs", (req, res) => {
 //     if (err) console.error("Erreur de connexion à la BDD");
 //     else console.log("Connecté à la BDD");
 // });
->>>>>>> Stashed changes:API/sportsController.js
 
 // //-------------------------------
 // //fin BDD
