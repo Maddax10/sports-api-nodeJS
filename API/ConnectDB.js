@@ -1,5 +1,6 @@
 import Express from "express";
 import cors from "cors";
+
 /**
  * Classe qui permet d'initialiser le serveur API, la documentation pour les users et les sports
  */
