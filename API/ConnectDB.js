@@ -1,6 +1,6 @@
 import Express from "express";
 import cors from "cors";
-import { GET, ROUTES_GET, ROUTES_POST, ROUTES_DELETE } from "./endpoints_users.js";
+
 /**
  * Classe qui permet d'initialiser le serveur API, la documentation pour les users et les sports
  */
@@ -10,7 +10,6 @@ export class Connect_DB {
     constructor() {
         this.singleton();
         this.init_connexion();
-        this.setup_users_docs();
     }
     /**
      * Le principe est d'avoir une seule instance de notre objet express
@@ -34,7 +33,7 @@ export class Connect_DB {
             this.#express.use(
                 cors({
                     origin: "*",
-                    methods: ["GET", "POST", "DELETE"],
+                    methods: ["GET", "POST", "PUT", "DELETE"],
                     allowedHeaders: ["Content-Type", "Authorization"],
                 })
             );
@@ -42,22 +41,6 @@ export class Connect_DB {
         } catch (error) {
             console.log(error);
         }
-    }
-
-    /**
-     * Initialise la documentation de l'API pour l'user
-     */
-    setup_users_docs() {
-        this.#express.get(`/docs`, (req, res) => {
-            const tmpDoc = {
-                ROUTES_GET,
-                ROUTES_POST,
-                ROUTES_DELETE,
-            };
-            return res.status(200).json(tmpDoc);
-        });
-
-        console.log("Initialisation user docs ✅");
     }
 
     getExpress() {
