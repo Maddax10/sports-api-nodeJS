@@ -3,9 +3,12 @@ import { Connect_DB } from "../connectDB.js";
 const endpoint = "users_EP";
 
 const ROUTES_GET = [
-	{ "/users_EP/:_id_user": "get one user" },
+	{ "/users_EP/users/:_id_user": "get one user" },
 	{ "/users_EP/users": "get all users" },
 	{ "/users_EP/seasons": "get all seasons" },
+	{ "/users_EP/weeks": "get all weeks" },
+	{ "/users_EP/sessions": "get all sessions" },
+	{ "/users_EP/exercises": "get all exercises" },
 	{ "/users_EP/login/:username_user/:password_user": "login" },
 	{
 		"/users_EP/register/": {
@@ -55,6 +58,7 @@ const db = new sqlite3.Database(`bdd.db`, (err) => {
  * Select de tous les users
  */
 express.get("/users", (req, res) => {
+	console.log("inside users route");
 	db.all(`SELECT * FROM users `, [], (err, rows) => {
 		if (err) return res.status(500).json({ error: err.message });
 		res.json(rows);
@@ -63,8 +67,9 @@ express.get("/users", (req, res) => {
 /**
  * Select d'un user via son id
  */
-express.get("/:_id_user", (req, res) => {
+express.get("/users/:_id_user", (req, res) => {
 	const { _id_user } = req.params;
+	console.log("inside userid route");
 
 	db.all(`SELECT * FROM users WHERE _id_user = ?`, [_id_user], (err, rows) => {
 		if (err) return res.status(500).json({ error: err.message });
@@ -78,6 +83,7 @@ express.get("/:_id_user", (req, res) => {
 express.get("/login/:username_user/:password_user", (req, res) => {
 	const { username_user } = req.params;
 	const { password_user } = req.params;
+	console.log("inside login route");
 
 	db.all(`SELECT * FROM users WHERE username_user = ? AND password_user = ?`, [username_user, password_user], (err, row) => {
 		if (err) return res.status(500).json({ error: err.message });
@@ -91,30 +97,68 @@ express.get("/login/:username_user/:password_user", (req, res) => {
  * Select de toutes les saisons
  */
 express.get("/seasons", (req, res) => {
+	console.log("inside seasons route");
 	db.all(`SELECT * FROM seasons`, [], (err, rows) => {
 		if (err) return res.status(500).json({ error: err.message });
 		res.json(rows);
 	});
 });
+//...
+//Weeks
+//...
 /**
- * Renvoit les infos de l'utilisateur si le login est bon
+ * Select de toutes les weeks
  */
-// express.get("/login/:username_user/:password_user", (req, res) => {
-//     const { username_user } = req.params;
-//     const { password_user } = req.params;
-
-//     db.all(`SELECT * FROM users WHERE username_user = ? AND password_user = ?`, [username_user, password_user], (err, rows) => {
-//         if (err) return res.status(500).json({ error: err.message });
-//         res.json(rows);
-//     });
-// });
-
+express.get("/weeks", (req, res) => {
+	console.log("inside weeks route");
+	db.all(`SELECT * FROM weeks`, [], (err, rows) => {
+		if (err) return res.status(500).json({ error: err.message });
+		res.json(rows);
+	});
+});
+//...
+//Sessions
+//...
+/**
+ * Select de toutes les sessions
+ */
+express.get("/sessions", (req, res) => {
+	console.log("inside sessions route");
+	db.all(`SELECT * FROM sessions`, [], (err, rows) => {
+		if (err) return res.status(500).json({ error: err.message });
+		res.json(rows);
+	});
+});
+//...
+//Exercises
+//...
+/**
+ * Select de toutes les exercices
+ */
+express.get("/exercises", (req, res) => {
+	console.log("inside exercises route");
+	db.all(`SELECT * FROM exercises`, [], (err, rows) => {
+		if (err) return res.status(500).json({ error: err.message });
+		res.json(rows);
+	});
+});
+/**
+ * Select de toutes les exercices en fonction de l'userId
+ */
+express.get("/exercises", (req, res) => {
+	console.log("inside exercises route");
+	db.all(`SELECT * FROM exercises`, [], (err, rows) => {
+		if (err) return res.status(500).json({ error: err.message });
+		res.json(rows);
+	});
+});
 //========================================================================
 // Routes CREATE
 //========================================================================
 
 //Ajouter un user
 express.post(`/register`, (req, res) => {
+	console.log("inside register route");
 	const keys = Object.keys(req.body);
 	// console.log("keys", keys);
 	const values = Object.values(req.body);
