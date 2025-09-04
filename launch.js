@@ -1,6 +1,6 @@
 import express from "express";
 
-import userController from "./API/usersController.js";
+import userController from "./controllers/usersController.js";
 // import sportsController from "./API/sportsController.js";
 
 //==============================
@@ -14,5 +14,5 @@ app.use("/users_EP", userController);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`Server running at port ${PORT}`);
+	console.log(`Server running at port ${PORT}`);
 });
