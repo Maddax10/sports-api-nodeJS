@@ -5,6 +5,7 @@ const endpoint = "users_EP";
 const ROUTES_GET = [
 	{ "/users_EP/:_id_user": "get one user" },
 	{ "/users_EP/users": "get all users" },
+	{ "/users_EP/seasons": "get all seasons" },
 	{ "/users_EP/login/:username_user/:password_user": "login" },
 	{
 		"/users_EP/register/": {
@@ -47,6 +48,9 @@ const db = new sqlite3.Database(`bdd.db`, (err) => {
 //========================================================================
 // Routes GET
 //========================================================================
+//...
+//Users
+//...
 /**
  * Select de tous les users
  */
@@ -75,12 +79,23 @@ express.get("/login/:username_user/:password_user", (req, res) => {
 	const { username_user } = req.params;
 	const { password_user } = req.params;
 
-	db.get(`SELECT * FROM users WHERE username_user = ? AND password_user = ?`, [username_user, password_user], (err, row) => {
+	db.all(`SELECT * FROM users WHERE username_user = ? AND password_user = ?`, [username_user, password_user], (err, row) => {
 		if (err) return res.status(500).json({ error: err.message });
 		res.status(200).json(row);
 	});
 });
-
+//...
+//seasons
+//...
+/**
+ * Select de toutes les saisons
+ */
+express.get("/seasons", (req, res) => {
+	db.all(`SELECT * FROM seasons`, [], (err, rows) => {
+		if (err) return res.status(500).json({ error: err.message });
+		res.json(rows);
+	});
+});
 /**
  * Renvoit les infos de l'utilisateur si le login est bon
  */
